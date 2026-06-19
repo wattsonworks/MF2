@@ -371,6 +371,42 @@
     }
   }
 
+  /* ---- draggable popping cards deck (pointer events; tap-through to WA) ---- */
+  (function () {
+    var deck = document.getElementById("deck");
+    if (!deck) return;
+    var z = 10;
+    [].forEach.call(deck.querySelectorAll(".kcard"), function (card) {
+      var baseR = parseFloat(card.getAttribute("data-r")) || 0;
+      var dx = 0, dy = 0, sx = 0, sy = 0, ox = 0, oy = 0, drag = false, moved = 0, pid = null;
+      function render() {
+        card.style.transform = "translate(calc(-50% + " + dx + "px), calc(-50% + " + dy + "px)) rotate(" + (drag ? 0 : baseR) + "deg) scale(" + (drag ? 1.06 : 1) + ")";
+      }
+      card.addEventListener("pointerdown", function (e) {
+        drag = true; moved = 0; pid = e.pointerId;
+        try { card.setPointerCapture(pid); } catch (_) {}
+        card.classList.add("grab"); card.style.zIndex = (++z);
+        sx = e.clientX; sy = e.clientY; ox = dx; oy = dy;
+        render();
+      });
+      card.addEventListener("pointermove", function (e) {
+        if (!drag) return;
+        dx = ox + (e.clientX - sx); dy = oy + (e.clientY - sy);
+        moved = Math.max(moved, Math.abs(e.clientX - sx) + Math.abs(e.clientY - sy));
+        render();
+      });
+      function release() {
+        if (!drag) return;
+        drag = false; card.classList.remove("grab");
+        try { card.releasePointerCapture(pid); } catch (_) {}
+        render();
+      }
+      card.addEventListener("pointerup", release);
+      card.addEventListener("pointercancel", release);
+      card.addEventListener("click", function (e) { if (moved > 8) e.preventDefault(); });
+    });
+  })();
+
   /* ---- footer year ---- */
   var yr = document.getElementById("yr"); if (yr) yr.textContent = new Date().getFullYear();
 })();
