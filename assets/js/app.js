@@ -375,9 +375,9 @@
   (function () {
     var tabs = [].slice.call(document.querySelectorAll(".etab"));
     if (!tabs.length) return;
-    tabs.forEach(function (t, i) {
-      setTimeout(function () { t.classList.add("shown"); }, (reduce ? 0 : 2200) + i * 130);
-    });
+    /* pop in from the left after the preloader lifts; resting state is already
+       on-screen (translateX 0), so tabs are never stuck off-screen */
+    if (!reduce) tabs.forEach(function (t, i) { setTimeout(function () { t.classList.add("pop"); }, 2300 + i * 140); });
     tabs.forEach(function (t) {
       var sx = 0, drag = false, moved = 0, pid = null;
       t.addEventListener("pointerdown", function (e) {
@@ -389,7 +389,7 @@
         if (!drag) return;
         var d = e.clientX - sx;
         moved = Math.max(moved, Math.abs(d));
-        t.style.transform = "translateX(" + Math.max(-130, Math.min(12, d)) + "px)";
+        t.style.transform = "translateX(" + Math.min(130, Math.max(-12, d)) + "px)";
       });
       function rel() {
         if (!drag) return;

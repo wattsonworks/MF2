@@ -524,22 +524,24 @@ body.loaded .preloader{display:none}
 /* ============================================================
    OFF-SCREEN EDGE TABS — pop in from the edge · tug to pull
    ============================================================ */
-.etabs{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:88;
+.etabs{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:88;
   display:flex;flex-direction:column;gap:.7rem;pointer-events:none}
 .etab{pointer-events:auto;writing-mode:vertical-rl;text-orientation:mixed;text-decoration:none;
   display:inline-flex;align-items:center;justify-content:center;
-  padding:1.15rem .55rem;border-radius:14px 0 0 14px;
+  padding:1.15rem .55rem;border-radius:0 14px 14px 0;
   font-family:var(--mono);font-weight:600;font-size:.74rem;letter-spacing:.16em;
-  color:#fff;background:var(--ink);box-shadow:-8px 12px 30px rgba(35,20,25,.3);
+  color:#fff;background:var(--ink);box-shadow:8px 12px 30px rgba(35,20,25,.3);
   cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;
-  transform:translateX(110%);transition:transform .55s var(--ease-out),box-shadow .3s,background .3s}
+  transform:translateX(0);
+  transition:transform .35s var(--ease-out),box-shadow .3s,background .3s}
+.etab.pop{animation:etabPop .7s var(--ease-out)}
+@keyframes etabPop{from{transform:translateX(-110%)}to{transform:translateX(0)}}
 .etab--rose{background:var(--rose)}
 .etab--gold{background:var(--gold);color:var(--ink)}
-.etab.shown{transform:translateX(0)}
-@media(hover:hover){.etab.shown:hover{transform:translateX(-10px);box-shadow:-16px 16px 42px rgba(35,20,25,.42)}}
+@media(hover:hover){.etab:hover{transform:translateX(10px);box-shadow:16px 16px 42px rgba(35,20,25,.42)}}
 .etab.grab{cursor:grabbing;transition:transform .09s linear,box-shadow .3s}
 @media(max-width:560px){.etab{font-size:.66rem;padding:.95rem .5rem;letter-spacing:.12em}}
-@media(prefers-reduced-motion:reduce){.etab{transform:translateX(0);transition:none}}
+@media(prefers-reduced-motion:reduce){.etab{animation:none}}
 
 /* mobile: stack hero CTAs full-width so the pink button never sits over the
    transparent one or the subtitle */
