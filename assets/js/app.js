@@ -93,8 +93,8 @@
   }, { threshold: 0.5 });
   counters.forEach(function (c) { cio.observe(c); });
 
-  /* ---- parallax (subtle) ---- */
-  if (!reduce) {
+  /* ---- parallax (subtle, desktop only — avoids mobile scroll jank) ---- */
+  if (fine && !reduce) {
     var pEras = [].map.call(document.querySelectorAll("[data-parallax]"), function (el) {
       return { el: el, speed: parseFloat(el.getAttribute("data-parallax")) || 0.12 };
     });
@@ -221,8 +221,8 @@
     window.addEventListener("scroll", skip, { once: true, passive: true });
   })();
 
-  /* ---- marquee reacts to scroll velocity ---- */
-  if (!reduce) {
+  /* ---- marquee reacts to scroll velocity (desktop only) ---- */
+  if (fine && !reduce) {
     var mq = document.querySelector(".marquee");
     if (mq) {
       var mly = window.scrollY, mv = 0;
