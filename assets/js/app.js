@@ -147,6 +147,72 @@
   if (lb) lb.addEventListener("click", function (e) { if (e.target === lb || e.target.classList.contains("lb__x")) closeLb(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeLb(); setMenu(false); } });
 
+  /* ---- preloader dismiss (CSS auto-lifts too; this is the failsafe) ---- */
+  window.addEventListener("load", function () { document.body.classList.add("loaded"); });
+  setTimeout(function () { document.body.classList.add("loaded"); }, 2800);
+
+  /* ---- scroll progress bar ---- */
+  (function () {
+    var bar = document.getElementById("progress");
+    if (!bar) return;
+    function upd() {
+      var h = document.documentElement, max = h.scrollHeight - h.clientHeight;
+      bar.style.transform = "scaleX(" + (max > 0 ? h.scrollTop / max : 0) + ")";
+    }
+    window.addEventListener("scroll", upd, { passive: true });
+    window.addEventListener("resize", upd); upd();
+  })();
+
+  /* ---- hero color-wash fade on scroll ---- */
+  (function () {
+    var wash = document.getElementById("heroWash");
+    if (!wash) return;
+    function f() { wash.style.opacity = Math.max(0, 1 - window.scrollY / (window.innerHeight * 0.8)); }
+    window.addEventListener("scroll", f, { passive: true }); f();
+  })();
+
+  /* ---- gallery drag-to-scroll ---- */
+  (function () {
+    var g = document.querySelector(".gal");
+    if (!g) return;
+    var down = false, sx = 0, sl = 0;
+    g.addEventListener("mousedown", function (e) { down = true; g.classList.add("drag"); sx = e.pageX; sl = g.scrollLeft; });
+    window.addEventListener("mouseup", function () { down = false; g.classList.remove("drag"); });
+    g.addEventListener("mouseleave", function () { down = false; g.classList.remove("drag"); });
+    g.addEventListener("mousemove", function (e) { if (!down) return; e.preventDefault(); g.scrollLeft = sl - (e.pageX - sx) * 1.4; });
+  })();
+
+  /* ---- custom cursor + magnetic buttons + hero tilt (desktop, fine pointer, motion-ok) ---- */
+  if (fine && !reduce) {
+    var cur = document.getElementById("cursor");
+    if (cur) {
+      var cgx = window.innerWidth / 2, cgy = window.innerHeight / 2, cdx = cgx, cdy = cgy;
+      (function cloop() { cdx += (cgx - cdx) * 0.2; cdy += (cgy - cdy) * 0.2; cur.style.left = cdx + "px"; cur.style.top = cdy + "px"; requestAnimationFrame(cloop); })();
+      window.addEventListener("mousemove", function (e) { cgx = e.clientX; cgy = e.clientY; cur.classList.add("on"); });
+      document.addEventListener("mouseleave", function () { cur.classList.remove("on"); });
+      document.querySelectorAll("a,button,.cl-row,.gal a").forEach(function (el) {
+        el.addEventListener("mouseenter", function () { cur.classList.add("grow"); });
+        el.addEventListener("mouseleave", function () { cur.classList.remove("grow"); });
+      });
+    }
+    document.querySelectorAll(".btn,.nav__cta").forEach(function (b) {
+      b.addEventListener("mousemove", function (e) {
+        var r = b.getBoundingClientRect();
+        b.style.transform = "translate(" + (e.clientX - r.left - r.width / 2) * 0.25 + "px," + (e.clientY - r.top - r.height / 2) * 0.3 + "px)";
+      });
+      b.addEventListener("mouseleave", function () { b.style.transform = ""; });
+    });
+    var heroEl = document.querySelector(".hero"), heroBg = document.querySelector(".hero__bg");
+    if (heroEl && heroBg) {
+      heroEl.addEventListener("mousemove", function (e) {
+        var r = heroEl.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+        heroBg.style.transform = "scale(1.06) translate(" + (px * -14) + "px," + (py * -14) + "px)";
+      });
+      heroEl.addEventListener("mouseleave", function () { heroBg.style.transform = ""; });
+    }
+  }
+
   /* ---- footer year ---- */
   var yr = document.getElementById("yr"); if (yr) yr.textContent = new Date().getFullYear();
 })();

@@ -23,15 +23,19 @@
 </head>
 <body>
 
+<div class="preloader" id="preloader"><div class="preloader__w">מיכל <b>פיטנס</b></div></div>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
 <!-- NAV -->
 <nav class="nav nav--onhero">
   <a href="#hero" class="nav__brand"><img src="assets/img/logo.png" alt="מיכל פיטנס"><span>מיכל פיטנס<small>Studio · Tzfat</small></span></a>
   <div class="nav__links">
-    <a href="#about">הסטודיו</a>
-    <a href="#classes">השיעורים</a>
-    <a href="#pricing">מחירון</a>
-    <a href="#gallery">גלריה</a>
-    <a href="#contact">צרי קשר</a>
+    <a href="#about" data-text="הסטודיו"><span class="tx">הסטודיו</span></a>
+    <a href="#classes" data-text="השיעורים"><span class="tx">השיעורים</span></a>
+    <a href="#pricing" data-text="מחירון"><span class="tx">מחירון</span></a>
+    <a href="#gallery" data-text="גלריה"><span class="tx">גלריה</span></a>
+    <a href="#contact" data-text="צרי קשר"><span class="tx">צרי קשר</span></a>
   </div>
   <a class="btn btn--rose nav__cta" href="https://wa.me/972543449212?text=היי מיכל! אני מעוניינת בכרטיסיית ניסיון – 3 אימונים 💪" target="_blank" rel="noopener">להצטרף</a>
   <button class="burger" aria-label="תפריט" aria-expanded="false"><span></span><span></span><span></span></button>
@@ -58,13 +62,14 @@
   <div class="hero__bg">
     <video class="hero__vid" id="heroVid" poster="assets/video/hero-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="הסטודיו בתנועה"><source src="assets/video/hero.mp4" type="video/mp4"></video>
   </div>
+  <div class="hero__wash" id="heroWash" aria-hidden="true"></div>
   <button class="hero__sound" id="heroSound" type="button" aria-label="הפעלת קול" hidden>🔊 קול</button>
   <div class="hero__inner">
     <div class="hero__kicker kicker">סטודיו אימונים לנשים · צפת</div>
     <h1>
       <span class="line"><span>מתאמנות יחד,</span></span>
       <span class="line"><span>מתחזקות יחד,</span></span>
-      <span class="line"><span><span class="accent">זוֹרחות</span> יחד.</span></span>
+      <span class="line"><span><span class="accent uline">זוֹרחות</span> יחד.</span></span>
     </h1>
     <p class="hero__sub">היי אהובה ♥ אצלך מתחיל הכוח. כאן תמצאי יחס אישי, אווירה משפחתית ואנרגיות מטורפות — בלב צפת.</p>
     <div class="hero__cta">
@@ -85,10 +90,11 @@
 
 <!-- ABOUT / MANIFESTO -->
 <section class="sec" id="about">
+  <span class="ghost" aria-hidden="true">01</span>
   <div class="wrap about">
     <div class="reveal">
       <span class="kicker">01 — הסטודיו</span>
-      <h2 class="about__statement">כאן זה לא עוד חדר כושר.<br>זו <span class="accent">קהילה</span>.</h2>
+      <h2 class="about__statement">כאן זה לא עוד חדר כושר.<br>זו <span class="grad">קהילה</span>.</h2>
       <p class="lead muted">סטודיו מיכל פיטנס מציע מגוון רחב של אימונים לנשים בכל גיל ובכל רמת כושר. נכנסת כאורחת — יוצאת כחלק מהמשפחה הכי חזקה בצפון.</p>
       <ul class="tick">
         <li>מאמנות מוסמכות עם דגש על יחס אישי לכל מתאמנת</li>
@@ -106,14 +112,14 @@
 
 <!-- CLASSES -->
 <section class="sec dark" id="classes">
-  <div class="wrap">
-    <div class="classes__head reveal">
-      <div>
-        <span class="kicker">02 — השיעורים</span>
-        <h2 class="display" style="margin-top:1.1rem">בחרי את האימון<br>שמדבר אלייך</h2>
-      </div>
-      <p class="lead muted" style="max-width:34ch">משריפת קלוריות עוצמתית ועד שקט פנימי — יש לנו אימון בשבילך, בכל יום בשבוע.</p>
-    </div>
+  <div class="aurora" aria-hidden="true"></div>
+  <span class="ghost" aria-hidden="true">02</span>
+  <div class="wrap classes-layout">
+    <aside class="classes__aside reveal">
+      <span class="kicker">02 — השיעורים</span>
+      <h2 class="display" style="margin-top:1.1rem">בחרי את האימון<br>שמדבר אלייך</h2>
+      <p class="lead muted" style="max-width:30ch;margin-top:1.4rem">משריפת קלוריות עוצמתית ועד שקט פנימי — יש לנו אימון בשבילך, בכל יום בשבוע.</p>
+    </aside>
     <div class="cl-list reveal d1">
       <a class="cl-row" href="https://wa.me/972543449212?text=היי מיכל! אני מעוניינת בשיעורי פונקציונלי 💪" target="_blank" rel="noopener" data-img="assets/img/gallery/a6.jpg"><span class="cl-row__n">01</span><span class="cl-row__thumb"><img src="assets/img/gallery/a6.jpg" alt=""></span><span class="cl-row__name">פונקציונלי</span><span class="cl-row__tag">כוח · גוף מלא</span><span class="cl-row__arrow">↗</span></a>
       <a class="cl-row" href="https://wa.me/972543449212?text=היי מיכל! אני מעוניינת בשיעורי ספינינג 💪" target="_blank" rel="noopener" data-img="assets/img/gallery/a3.jpg"><span class="cl-row__n">02</span><span class="cl-row__thumb"><img src="assets/img/gallery/a3.jpg" alt=""></span><span class="cl-row__name">ספינינג</span><span class="cl-row__tag">קרדיו · סיבולת</span><span class="cl-row__arrow">↗</span></a>
@@ -137,6 +143,7 @@
 
 <!-- PRICING -->
 <section class="sec" id="pricing">
+  <span class="ghost" aria-hidden="true">03</span>
   <div class="wrap">
     <div class="pricing__head reveal">
       <span class="kicker" style="justify-content:center">03 — מחירון</span>
@@ -175,9 +182,10 @@
 
 <!-- GALLERY -->
 <section class="sec" id="gallery">
+  <span class="ghost" aria-hidden="true">04</span>
   <div class="wrap">
     <div class="classes__head reveal">
-      <div><span class="kicker">04 — גלריה</span><h2 class="display" style="margin-top:1.1rem">רגעים<br>מהסטודיו</h2></div>
+      <div><span class="kicker">04 — גלריה</span><h2 class="display" style="margin-top:1.1rem">רגעים<br>מהסטודיו</h2><div class="gal-hint">← גררי לצדדים →</div></div>
       <a class="btn btn--fill" href="https://instagram.com/michal_fitness_studio" target="_blank" rel="noopener">עוד באינסטגרם</a>
     </div>
     <div class="gal reveal d1">
@@ -196,6 +204,7 @@
 
 <!-- QUOTE + REVIEWS -->
 <section class="sec dark">
+  <div class="aurora" aria-hidden="true"></div>
   <div class="wrap reveal">
     <p class="quote display">המקום היחיד שאני מחכה להגיע אליו כל יום</p>
     <p style="text-align:center;font-family:var(--mono);font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;margin-top:1.6rem;color:var(--blush)">לקוחות ממליצות 🥰</p>
@@ -212,6 +221,7 @@
 
 <!-- CONTACT -->
 <section class="sec" id="contact">
+  <span class="ghost" aria-hidden="true">05</span>
   <div class="wrap contact">
     <div class="map reveal">
       <iframe title="מיקום הסטודיו" loading="lazy" src="https://maps.google.com/maps?q=%D7%A7%D7%A0%D7%99%D7%95%D7%9F%20%D7%A9%D7%A2%D7%A8%D7%99%20%D7%94%D7%A2%D7%99%D7%A8%20%D7%A6%D7%A4%D7%AA&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
@@ -224,7 +234,13 @@
         <div><dt>הסטודיו</dt><dd>קניון שערי העיר, צפת</dd></div>
         <div><dt>לו״ז ושריון מקום</dt><dd><a href="https://new.boostapp.co.il/online.php?CreateCode=6183e7733984c1636034419126205568134455126183e77339871" target="_blank" rel="noopener">אפליקציית בוסט ↗</a></dd></div>
       </dl>
-      <a class="btn btn--rose" href="https://wa.me/972543449212?text=היי מיכל! אני רוצה לתאם אימון ניסיון 💪" target="_blank" rel="noopener">לתיאום אימון ניסיון</a>
+      <div class="contact__cta">
+        <a class="btn btn--rose" href="https://wa.me/972543449212?text=היי מיכל! אני רוצה לתאם אימון ניסיון 💪" target="_blank" rel="noopener">לתיאום אימון ניסיון</a>
+        <a class="badge" href="https://wa.me/972543449212?text=היי מיכל! אני מעוניינת לשמוע פרטים 💪" target="_blank" rel="noopener" aria-label="דברי איתנו בוואטסאפ">
+          <svg viewBox="0 0 100 100"><defs><path id="badgePath" fill="none" d="M50,12 a38,38 0 1,1 -0.1,0"/></defs><text><textPath href="#badgePath" startOffset="0">✦ ספרי לי ✦ להצטרף ✦ לתיאום ✦ </textPath></text></svg>
+          <span class="badge__dot">↗</span>
+        </a>
+      </div>
     </div>
   </div>
   <div class="wrap booking reveal">
