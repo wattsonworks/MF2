@@ -403,6 +403,104 @@
     });
   })();
 
+  /* ---- live schedule drawer (time-aware, 2-week loop) ---- */
+  (function () {
+    var drawer = document.getElementById("sched");
+    if (!drawer) return;
+    var tab = document.getElementById("schedTab");
+    var scrim = document.getElementById("schedScrim");
+    var DUR = 55; // assumed class length (min) for the "now" window
+    var DAYS = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+    // index 0=Sun … 6=Sat. Week A (e.g. 21/06) and Week B (e.g. 28/06) — loop by week parity.
+    var A = [
+      [["08:30","עיצוב וחיטוב","רחלי הילל"],["17:30","פילאטיס","רחלי הילל"],["18:30","קיקבוקס שורף · ישבן בטן","מיכל רייכר"],["19:30","אימון כח משולב HIIT","מיכל רייכר"]],
+      [["05:30","עיצוב וחיטוב · אימון זריחה","מיכל רייכר"],["08:30","פילאטיס power","רחלי הילל"],["17:15","עיצוב וחיטוב · תחנות","מיכל רייכר"],["18:30","ספינינג","מיכל רייכר"],["19:30","יוגה","זוהרה"]],
+      [["08:30","עיצוב וחיטוב","מיכל רייכר"],["09:30","פילאטיס power","מיכל רייכר"],["18:00","עיצוב וחיטוב","רחלי הילל"],["19:15","עיצוב וחיטוב","רחלי הילל"]],
+      [["08:30","פילאטיס power","רחלי הילל"],["17:15","אימון כח משולב HIIT","רחלי הילל"],["18:20","פילאטיס power","מיכל רייכר"],["19:30","ספינינג","מיכל רייכר"]],
+      [["05:30","ריצת זריחה + מתיחות בטבע","מיכל רייכר"],["08:30","עיצוב וחיטוב","מיכל רייכר"],["17:30","עיצוב חיטוב · תחנות","ליאור מלול"],["18:45","קנגו ג׳אמפ","ליאור מלול"]],
+      [["07:30","עיצוב וחיטוב","רחלי הילל"],["08:30","פילאטיס power","רחלי הילל"],["09:30","עיצוב וחיטוב","רחלי הילל"]],
+      []
+    ];
+    var B = [
+      [["08:30","עיצוב וחיטוב","מיכל רייכר"],["17:30","פילאטיס","מיכל רייכר"],["18:30","קיקבוקס שורף · ישבן בטן","מיכל רייכר"],["19:30","אימון כח משולב HIIT","מיכל רייכר"]],
+      [["05:30","עיצוב וחיטוב · אימון זריחה","לימור נידם"],["08:30","פילאטיס power","מיכל רייכר"],["17:15","עיצוב וחיטוב · תחנות","מיכל רייכר"],["18:30","ספינינג","מיכל רייכר"],["19:30","יוגה","זוהרה"]],
+      [["08:30","עיצוב וחיטוב","מיכל רייכר"],["09:30","פילאטיס power","מיכל רייכר"],["18:00","עיצוב וחיטוב","מיכל רייכר"],["19:15","עיצוב וחיטוב","מיכל רייכר"],["20:20","זומבה","שירז עזרא"]],
+      [["08:30","פילאטיס power","מיכל רייכר"],["17:15","אימון כח משולב HIIT","מיכל רייכר"],["18:20","פילאטיס power","מיכל רייכר"],["19:30","ספינינג","מיכל רייכר"]],
+      [["05:30","ריצת זריחה + מתיחות בטבע","מיכל רייכר"],["08:30","עיצוב וחיטוב","מיכל רייכר"],["17:30","עיצוב חיטוב · תחנות","ליאור מלול"],["18:45","קנגו ג׳אמפ","ליאור מלול"]],
+      [["07:30","עיצוב וחיטוב","רחלי הילל"],["08:30","פילאטיס power","רחלי הילל"],["09:30","עיצוב וחיטוב","רחלי הילל"]],
+      []
+    ];
+    function toMin(t) { var p = t.split(":"); return (+p[0]) * 60 + (+p[1]); }
+    function weekOf(d) {
+      var anchor = Date.UTC(2026, 5, 21); // Sun 21/06/2026 = week A start (loops; dates don't matter)
+      var dd = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+      var w = Math.floor((dd - anchor) / (7 * 86400000));
+      return (((w % 2) + 2) % 2) === 0 ? A : B;
+    }
+    function item(c, cls) { return '<li class="sched-item ' + (cls || "") + '"><span class="t">' + c[0] + '</span><span class="n">' + c[1] + '</span><span class="w">' + c[2] + '</span></li>'; }
+    function render() {
+      var now = new Date(), dow = now.getDay(), today = weekOf(now)[dow] || [];
+      var nowMin = now.getHours() * 60 + now.getMinutes();
+      var ongoing = null, nextC = null, nextLabel = "";
+      today.forEach(function (c) { var s = toMin(c[0]); if (!ongoing && nowMin >= s && nowMin < s + DUR) ongoing = c; });
+      for (var i = 0; i < today.length; i++) { if (toMin(today[i][0]) > nowMin) { nextC = today[i]; nextLabel = "היום"; break; } }
+      if (!nextC) {
+        for (var k = 1; k <= 7; k++) {
+          var dd = new Date(now.getTime() + k * 86400000), list = weekOf(dd)[dd.getDay()] || [];
+          if (list.length) { nextC = list[0]; nextLabel = (k === 1 ? "מחר" : "יום " + DAYS[dd.getDay()]); break; }
+        }
+      }
+      var nowEl = document.getElementById("schedNow"), titleEl = document.getElementById("schedNowTitle");
+      if (ongoing) {
+        nowEl.className = "sched__now live";
+        nowEl.innerHTML = '<div class="lbl"><span class="dot"></span>מתאמנות עכשיו</div><div class="cls">' + ongoing[1] + '</div><div class="meta">' + ongoing[0] + ' · ' + ongoing[2] + ' · סטודיו א</div>';
+        titleEl.textContent = "קורה עכשיו בסטודיו";
+      } else if (nextC) {
+        var diff = toMin(nextC[0]) - nowMin, hrs = Math.round(diff / 60);
+        var rel = nextLabel === "היום" ? (diff < 60 ? "בעוד " + diff + " דק׳" : (hrs === 1 ? "בעוד כשעה" : "בעוד כ-" + hrs + " שעות")) : nextLabel;
+        nowEl.className = "sched__now";
+        nowEl.innerHTML = '<div class="lbl">השיעור הבא · ' + rel + '</div><div class="cls">' + nextC[1] + '</div><div class="meta">' + nextC[0] + ' · ' + nextC[2] + ' · סטודיו א</div>';
+        titleEl.textContent = "מתי מתאמנים";
+      } else {
+        nowEl.className = "sched__now";
+        nowEl.innerHTML = '<div class="lbl">אין שיעורים קרובים</div><div class="meta">נתראה בקרוב 💛</div>';
+      }
+      var todayEl = document.getElementById("schedToday");
+      if (today.length) {
+        var rows = today.map(function (c) {
+          var s = toMin(c[0]);
+          var cls = (c === ongoing) ? "now" : (c === nextC && nextLabel === "היום") ? "next" : (s + DUR <= nowMin ? "past" : "");
+          return item(c, cls);
+        }).join("");
+        todayEl.innerHTML = '<div class="sched__sub">היום · יום ' + DAYS[dow] + '</div><ul class="sched__list">' + rows + '</ul>';
+      } else {
+        todayEl.innerHTML = '<div class="sched__sub">היום · יום ' + DAYS[dow] + '</div><p style="padding:.3rem 1.4rem;opacity:.7">אין שיעורים היום — יום מנוחה 🌙</p>';
+      }
+      if (tab) tab.classList.toggle("live", !!ongoing);
+    }
+    function buildWeek() {
+      var wk = weekOf(new Date()), html = "";
+      for (var d = 0; d < 7; d++) {
+        var list = wk[d] || []; if (!list.length) continue;
+        html += '<div class="sched__day"><h4>יום ' + DAYS[d] + '</h4><ul class="sched__list">' + list.map(function (c) { return item(c, ""); }).join("") + '</ul></div>';
+      }
+      document.getElementById("schedWeek").innerHTML = html;
+    }
+    function open() { render(); buildWeek(); document.body.classList.add("sched-open"); document.documentElement.style.overflow = "hidden"; drawer.setAttribute("aria-hidden", "false"); }
+    function close() { document.body.classList.remove("sched-open"); document.documentElement.style.overflow = ""; drawer.setAttribute("aria-hidden", "true"); }
+    if (tab) tab.addEventListener("click", function (e) { e.preventDefault(); open(); });
+    if (scrim) scrim.addEventListener("click", close);
+    drawer.querySelector(".sched__x").addEventListener("click", close);
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+    var moreBtn = document.getElementById("schedMore"), weekEl = document.getElementById("schedWeek");
+    if (moreBtn) moreBtn.addEventListener("click", function () {
+      if (weekEl.hasAttribute("hidden")) { weekEl.removeAttribute("hidden"); moreBtn.textContent = "הסתר ↑"; }
+      else { weekEl.setAttribute("hidden", ""); moreBtn.textContent = "כל השבוע ↓"; }
+    });
+    render(); // set the live dot on the tab at load
+    setInterval(render, 60000); // keep "now/next" + dot fresh
+  })();
+
   /* ---- footer year ---- */
   var yr = document.getElementById("yr"); if (yr) yr.textContent = new Date().getFullYear();
 })();

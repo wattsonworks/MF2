@@ -318,8 +318,20 @@
 <div class="etabs" aria-label="קיצורי דרך">
   <a class="etab etab--rose" style="--i:0" href="https://wa.me/972543449212?text=היי מיכל! אני מעוניינת בכרטיסיית ניסיון – 3 אימונים 💪" target="_blank" rel="noopener">הצטרפי</a>
   <a class="etab etab--ink" style="--i:1" href="#pricing">מחירון</a>
-  <a class="etab etab--gold" style="--i:2" href="https://new.boostapp.co.il/online.php?CreateCode=6183e7733984c1636034419126205568134455126183e77339871" target="_blank" rel="noopener">לו״ז</a>
+  <a class="etab etab--gold" id="schedTab" style="--i:2" href="https://new.boostapp.co.il/online.php?CreateCode=6183e7733984c1636034419126205568134455126183e77339871" target="_blank" rel="noopener">לו״ז</a>
 </div>
+
+<!-- LIVE SCHEDULE DRAWER (pulled from the לו״ז ribbon tab) -->
+<div class="sched-scrim" id="schedScrim"></div>
+<aside class="sched" id="sched" aria-hidden="true" aria-label="לוח אימונים חי">
+  <button class="sched__x" aria-label="סגירה">&times;</button>
+  <div class="sched__head"><span class="kicker">לוח אימונים · חי</span><h3 id="schedNowTitle">לוח האימונים</h3></div>
+  <div class="sched__now" id="schedNow"></div>
+  <div id="schedToday"></div>
+  <button class="sched__more" id="schedMore">כל השבוע ↓</button>
+  <div class="sched__week" id="schedWeek" hidden></div>
+  <a class="btn btn--rose sched__book" id="schedBook" href="https://new.boostapp.co.il/online.php?CreateCode=6183e7733984c1636034419126205568134455126183e77339871" target="_blank" rel="noopener">לשריון מקום באפליקציה ↗</a>
+</aside>
 
 <!-- FLOATING WHATSAPP -->
 <a class="wa" href="https://wa.me/972543449212?text=היי מיכל! אני מעוניינת לשמוע פרטים 💪" target="_blank" rel="noopener" aria-label="וואטסאפ">
