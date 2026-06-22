@@ -197,11 +197,7 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-8px) rotate(-45de
 .cl-row__name{font-family:var(--serif);font-weight:500;font-size:clamp(1.8rem,5.5vw,4.2rem);line-height:1;
   transition:transform .45s var(--ease),color .3s;flex:1}
 .cl-row__tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--blush);opacity:.8}
-.cl-row__thumb{display:block;width:clamp(60px,7.5vw,104px);height:clamp(60px,7.5vw,104px);flex:0 0 auto;
-  border-radius:14px;overflow:hidden;position:relative;background:#1c1116;box-shadow:0 8px 22px rgba(42,20,29,.35)}
-.cl-row__thumb img,.cl-row__thumb video{width:100%;height:100%;object-fit:cover;display:block}
-.cl-row--video .cl-row__thumb::after{content:"►";position:absolute;inset-block-end:5px;inset-inline-end:7px;z-index:2;
-  font-size:.62rem;line-height:1;color:#fff;opacity:.95;text-shadow:0 1px 5px rgba(0,0,0,.7);pointer-events:none}
+.cl-row__thumb{display:none}
 .cl-row__arrow{font-family:var(--mono);opacity:0;transform:translateX(-10px);transition:.4s var(--ease);color:var(--rose)}
 @media(hover:hover){
   .cl-row:hover{padding-inline-start:1.4rem}
@@ -215,7 +211,8 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-8px) rotate(-45de
 /* mobile: inline thumbs, tappable */
 @media(hover:none),(max-width:760px){
   .cl-row{gap:1rem}
-  .cl-row__thumb{width:68px;height:68px;flex:0 0 68px}
+  .cl-row__thumb{display:block;width:64px;height:64px;flex:0 0 64px;border-radius:50%;overflow:hidden}
+  .cl-row__thumb img{width:100%;height:100%;object-fit:cover}
   .cl-row__name{font-size:clamp(1.5rem,7vw,2.2rem)}
   .cl-row__arrow{opacity:1;transform:none}
 }

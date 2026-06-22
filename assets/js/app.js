@@ -257,7 +257,7 @@
       var lbl = document.createElement("span"); lbl.className = "cursor__label"; curEl.appendChild(lbl);
       document.addEventListener("mouseover", function (e) {
         var t = e.target.closest ? e.target.closest(".cl-row,.gal") : null;
-        if (t && t.classList.contains("cl-row")) { curEl.classList.add("labeled"); lbl.textContent = "להצטרף ↗"; }
+        if (t && t.classList.contains("cl-row")) { curEl.classList.add("labeled"); lbl.textContent = "צפי ↗"; }
         else if (t) { curEl.classList.add("labeled"); lbl.textContent = "גררי"; }
         else { curEl.classList.remove("labeled"); }
       });
@@ -517,21 +517,6 @@
       reels.forEach(function (v) { io.observe(v); });
     } else {
       reels.forEach(play);
-    }
-  })();
-
-  /* ---- inline class-row clips: small muted loops that play when scrolled into view ---- */
-  (function () {
-    var clips = document.querySelectorAll("[data-clip]");
-    if (!clips.length || reduce) return; // reduced-motion: leave the poster frame, no autoplay
-    var play = function (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); };
-    if ("IntersectionObserver" in window) {
-      var io = new IntersectionObserver(function (ents) {
-        ents.forEach(function (e) { if (e.isIntersecting) play(e.target); else e.target.pause(); });
-      }, { threshold: 0.4 });
-      clips.forEach(function (v) { io.observe(v); });
-    } else {
-      clips.forEach(play);
     }
   })();
 
