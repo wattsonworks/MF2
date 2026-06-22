@@ -1,0 +1,15 @@
+{
+  "name": "מיכל פיטנס סטודיו",
+  "short_name": "מיכל פיטנס",
+  "description": "סטודיו אימוני נשים בצפת — ספינינג, קיקבוקס, יוגה, קנגו ג׳אמפ ועוד.",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#2a141d",
+  "theme_color": "#2a141d",
+  "icons": [
+    { "src": "assets/img/logo.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" }
+  ]
+}
