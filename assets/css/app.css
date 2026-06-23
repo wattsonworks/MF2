@@ -342,15 +342,22 @@ body.menu-open .burger span:nth-child(3){transform:translateY(-8px) rotate(-45de
    ============================================================ */
 .wrap{position:relative;z-index:1}
 
-/* preloader (auto-dismisses via CSS even without JS) */
+/* preloader — JS-driven progress; lifts on real load (failsafe in JS too) */
 .preloader{position:fixed;inset:0;z-index:300;background:var(--wine);display:grid;place-items:center;
-  animation:preOut .85s var(--ease-out) 1.35s forwards}
+  transition:opacity .7s var(--ease-out),visibility .7s}
+.preloader__inner{text-align:center;padding:var(--gut)}
 .preloader__w{font-family:var(--serif);font-weight:500;color:var(--paper);font-size:clamp(2.2rem,9vw,5.5rem);
-  letter-spacing:-.01em;opacity:0;transform:translateY(24px);animation:preIn .9s var(--ease-out) .15s forwards}
+  letter-spacing:-.01em;line-height:1;opacity:0;transform:translateY(24px);animation:preIn .9s var(--ease-out) .12s forwards}
 .preloader__w b{color:var(--rose);font-weight:500}
+.preloader__sub{font-family:var(--mono);font-size:clamp(.6rem,2.4vw,.72rem);letter-spacing:.34em;text-transform:uppercase;
+  color:var(--blush);opacity:0;margin-top:.95rem;animation:preIn .9s var(--ease-out) .42s forwards}
+.preloader__bar{width:min(220px,52vw);height:2px;margin:1.6rem auto 0;border-radius:2px;overflow:hidden;
+  background:rgba(255,255,255,.16);opacity:0;animation:preIn .7s var(--ease-out) .6s forwards}
+.preloader__bar span{display:block;height:100%;width:0;background:var(--rose);border-radius:inherit;transition:width .3s var(--ease-out)}
+.preloader__pct{font-family:var(--mono);font-size:.66rem;letter-spacing:.22em;color:var(--blush);
+  opacity:0;margin-top:.8rem;animation:preIn .7s var(--ease-out) .6s forwards}
 @keyframes preIn{to{opacity:1;transform:none}}
-@keyframes preOut{to{clip-path:inset(0 0 100% 0);pointer-events:none}}
-body.loaded .preloader{display:none}
+body.loaded .preloader{opacity:0;visibility:hidden;pointer-events:none}
 
 /* scroll progress (fills from the start = right in RTL) */
 .progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:130;transform:scaleX(0);transform-origin:right;

@@ -162,9 +162,30 @@
   if (lb) lb.addEventListener("click", function (e) { if (e.target === lb || e.target.classList.contains("lb__x")) closeLb(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeLb(); setMenu(false); } });
 
-  /* ---- preloader dismiss (CSS auto-lifts too; this is the failsafe) ---- */
-  window.addEventListener("load", function () { document.body.classList.add("loaded"); });
-  setTimeout(function () { document.body.classList.add("loaded"); }, 2800);
+  /* ---- smart preloader: eased progress that completes on real page load ---- */
+  (function () {
+    var pl = document.getElementById("preloader");
+    if (!pl) return;
+    var fill = document.getElementById("preBarFill");
+    var pct = document.getElementById("prePct");
+    var done = false, p = 0, started = Date.now();
+    var MIN = 1800, MAX = 6000; // min on-screen so it never flashes; hard failsafe
+    function setP(v) { p = v > 100 ? 100 : v; if (fill) fill.style.width = p + "%"; if (pct) pct.textContent = Math.round(p) + "%"; }
+    function lift() { if (!done) { done = true; document.body.classList.add("loaded"); } }
+    if (reduce) { lift(); return; } // reduced-motion: CSS hides the splash; skip the animation
+    // ease toward 90% while assets load, then complete + hold a beat
+    var tick = setInterval(function () { if (p < 90) setP(p + Math.max(0.6, (90 - p) * 0.07)); }, 90);
+    function finish() {
+      clearInterval(tick); setP(100);
+      setTimeout(lift, Math.max(0, MIN - (Date.now() - started)) + 320);
+    }
+    if (document.readyState === "complete") finish();
+    else window.addEventListener("load", finish);
+    setTimeout(function () { clearInterval(tick); setP(100); lift(); }, MAX); // failsafe
+    function skip() { clearInterval(tick); setP(100); lift(); } // tap/scroll to skip
+    pl.addEventListener("click", skip);
+    window.addEventListener("scroll", skip, { once: true, passive: true });
+  })();
 
   /* ---- scroll progress bar ---- */
   (function () {
@@ -227,14 +248,6 @@
       heroEl.addEventListener("mouseleave", function () { heroBg.style.transform = ""; });
     }
   }
-
-  /* ---- preloader: tap or scroll to skip ---- */
-  (function () {
-    function skip() { document.body.classList.add("loaded"); }
-    var pl = document.getElementById("preloader");
-    if (pl) pl.addEventListener("click", skip);
-    window.addEventListener("scroll", skip, { once: true, passive: true });
-  })();
 
   /* ---- marquee reacts to scroll velocity (desktop only) ---- */
   if (fine && !reduce) {
