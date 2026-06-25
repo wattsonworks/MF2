@@ -625,7 +625,7 @@ body.sched-open .sched{transform:translateX(0);visibility:visible;transition:tra
 .reel figcaption span{display:block;color:var(--blush);opacity:.82;font-size:.86rem;line-height:1.55;max-width:44ch}
 @media(min-width:860px){
   .reels__grid{grid-template-columns:minmax(280px,360px) 1fr;align-items:start}
-  .reel--lg{grid-row:span 2}
+  .reel--lg{grid-row:span 3}
 }
 @media(max-width:859px){ .reel--lg{max-width:340px;margin-inline:auto} }
 /* under reduced-motion the reels get native controls — keep the corner tag off the control bar */
@@ -634,3 +634,15 @@ body.sched-open .sched{transform:translateX(0);visibility:visible;transition:tra
 /* ===== visible keyboard focus (WCAG 2.4.7) — was missing site-wide ===== */
 :focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:4px}
 .dark :focus-visible,.hero :focus-visible,.etabs :focus-visible,.sched :focus-visible{outline-color:var(--blush)}
+
+/* founder motto — pull quote in the about section */
+.motto{margin:1.5rem 0 0;padding:0 0 0 1rem;border:0;border-inline-start:3px solid var(--rose);
+  font-family:var(--serif);font-style:italic;font-size:clamp(1.25rem,3.2vw,1.7rem);line-height:1.35;color:var(--ink)}
+.dark .motto{color:var(--paper)}
+
+/* ── overlay coordination: one overlay at a time, nothing collides ── */
+body.sched-open .nav,
+body.sched-open .etabs,
+body.sched-open .wa,
+body.menu-open .etabs,
+body.menu-open .wa{opacity:0;visibility:hidden;pointer-events:none}

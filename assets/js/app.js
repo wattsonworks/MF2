@@ -27,6 +27,7 @@
   /* ---- full-screen menu ---- */
   var burger = document.querySelector(".burger");
   function setMenu(open) {
+    if (open) { document.body.classList.remove("sched-open"); var sd = document.getElementById("sched"); if (sd) sd.setAttribute("aria-hidden", "true"); }
     document.body.classList.toggle("menu-open", open);
     document.documentElement.style.overflow = open ? "hidden" : "";
     if (burger) burger.setAttribute("aria-expanded", open ? "true" : "false");
@@ -499,7 +500,7 @@
       }
       document.getElementById("schedWeek").innerHTML = html;
     }
-    function open() { render(); buildWeek(); document.body.classList.add("sched-open"); document.documentElement.style.overflow = "hidden"; drawer.setAttribute("aria-hidden", "false"); }
+    function open() { document.body.classList.remove("menu-open"); render(); buildWeek(); document.body.classList.add("sched-open"); document.documentElement.style.overflow = "hidden"; drawer.setAttribute("aria-hidden", "false"); }
     function close() { document.body.classList.remove("sched-open"); document.documentElement.style.overflow = ""; drawer.setAttribute("aria-hidden", "true"); }
     if (tab) tab.addEventListener("click", function (e) { e.preventDefault(); open(); });
     if (scrim) scrim.addEventListener("click", close);
